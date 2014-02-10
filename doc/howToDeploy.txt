@@ -1,0 +1,16 @@
+To deploy earthChem app:
+	1. In build.properties file, specify the home folder for jboss and jdk respectively
+		jboss.home=C:/jboss-as-7.1.1
+		java.home=C:\jdk1.7.0_40
+	2. In src\main\resources\jdbc.properties, specify the database info
+		jdbc.driverClassName=oracle.jdbc.driver.OracleDriver
+		jdbc.url=jdbc:oracle:thin:@localhost:1521:ec
+		jdbc.username=ec
+		jdbc.password=ec
+	3. cd to root folder of the project
+		a. Build war file
+			ant war
+		b. Directly deploy the war file to jboss server
+			ant deploy-dev or ant deploy
+		c. Clean up all folders
+			ant clean-all

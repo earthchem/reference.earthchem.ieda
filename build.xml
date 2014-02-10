@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="earthChem" default="compile" basedir=".">
+
+    <!-- Load local and user build preferences -->
+    <property file="build.properties"/>
+    
+<!-- ===== INITIALIZATION PROPERTIES ======================================= -->
+    
+    <property name="src.dir" value="src/main/java"/>
+	<property name="build.dir" value="build"/>
+    <property name="lib.dir" value="${build.dir}/WEB-INF/lib"/>
+    <property name="config.dir" value="src/main"/>
+    <property name="classes.dir" value="${build.dir}/WEB-INF/classes"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="webapp.dir" value="WebContent"/>
+    <property name="resources.dir" value="src/main/resources"/>
+
+    <!-- define useful filesets -->
+    <fileset id="required.jars" dir="${lib.dir}">
+        <include name="*.jar"/>
+    </fileset>
+
+    <!-- for classpath -->
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+
+<!-- ===== EXECUTABLE TARGETS ============================================== -->
+    
+<!-- ==================================================== -->
+<!-- create the build directory structure used by compile -->   
+<!-- ==================================================== -->
+    <target name="init" description="create the build directory structure">
+        <echo message="creating the build directory structure"/>   
+        <mkdir dir="${build.dir}"/>
+        <copy todir="${build.dir}">
+            <fileset dir="${webapp.dir}" includes="index.html"/>
+        </copy>
+
+        <mkdir dir="${build.dir}/WEB-INF"/>
+        <copy todir="${build.dir}/WEB-INF">
+            <fileset dir="${webapp.dir}/WEB-INF" 
+                includes="**/*"/> 
+        </copy>
+        
+        <mkdir dir="${classes.dir}"/>
+        <copy todir="${classes.dir}">
+            <fileset dir="${resources.dir}" 
+                includes="**/*"/> 
+        </copy>
+        
+		<copy todir="${classes.dir}">
+            <fileset dir="${src.dir}" 
+                includes="**/*.xml"/> 
+        </copy>
+		
+        <mkdir dir="${build.dir}/WEB-INF/lib"/>   
+        <copy todir="${build.dir}/WEB-INF/lib">
+            <fileset refid="required.jars"/>
+        </copy>
+
+        <mkdir dir="${build.dir}/styles"/>
+        <copy todir="${build.dir}/styles">
+            <fileset dir="${webapp.dir}/styles" includes="**/*"/>
+        </copy>
+        
+        <mkdir dir="${build.dir}/images"/>
+        <copy todir="${build.dir}/images">
+            <fileset dir="${webapp.dir}/images" includes="**/*"/>
+        </copy>
+		
+		<mkdir dir="${build.dir}/jsp"/>
+        <copy todir="${build.dir}/jsp">
+            <fileset dir="${webapp.dir}/jsp" includes="**/*"/>
+        </copy>
+
+    </target>   
+
+<!-- ==================================================== -->
+<!-- compiles java source code                            -->
+<!-- ==================================================== -->
+    <target name="compile" depends="clean, init" description="compile java sources">
+        <echo message="compiling java source code"/>
+
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}"
+                destdir="${classes.dir}"
+                debug="on"
+                deprecation="on"
+                optimize="on">
+            <classpath>
+            	<pathelement location="${rs.jar}"/>
+                <pathelement location="${servlet.jar}"/>
+                <pathelement location="${jsp.jar}"/>
+                <fileset refid="required.jars"/>
+            </classpath>
+            <compilerarg value="-Xlint"/>
+            <compilerarg value="-Xlint:-serial"/>
+        </javac>
+    </target>
+    
+<!-- ==================================================== -->
+<!-- creates a war file                                   -->
+<!-- ==================================================== -->
+    <target name="war" depends="compile" description="create web application archive">
+        <echo message="creating WAR file" />
+        <mkdir dir="${dist.dir}"/>
+        <jar jarfile="${dist.dir}/${ant.project.name}.war" basedir="${build.dir}"/>
+    </target>
+    
+	<target name="client.jar" depends="compile">
+	          <echo message="create the client jar file ..."/>
+	          <jar destfile="${dist.dir}/${ant.project.name}.client.jar" basedir="${classes.dir}"
+	            includes="**/client/*.class, **/domain/**" />
+    </target>
+<!-- ==================================================== -->
+<!-- clean build directories                              -->
+<!-- ==================================================== -->
+    <target name="clean" description="clean build and deployment directories">
+        <echo message="cleaning ${ant.project.name}"/>
+        <delete dir="${build.dir}"/>
+        <delete file="${dist.dir}/${ant.project.name}.war"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+    
+<!-- ===== DEVELOPMENT TARGETS ============================================= -->
+    
+<!-- ==================================================== -->
+<!-- deploy                                               -->
+<!-- ==================================================== -->
+    <target name="deploy-dev" depends="clean-all, war">
+        <echo message="deploying war file to jboss"/>
+        <copy todir="${jboss.home}/standalone/deployments" file="${dist.dir}/${ant.project.name}.war"/> 
+    </target>
+	<!-- ==================================================== -->
+	<!-- deploy                                               -->
+	<!-- ==================================================== -->
+	    <target name="deploy" depends="clean, war">
+	        <echo message="deploying war file to tomcat"/>
+	        <copy todir="${jboss.home}/standalone/deployments" file="${dist.dir}/${ant.project.name}.war"/> 
+	    </target>
+    
+<!-- ==================================================== -->
+<!-- clean build and deployment directories and log files -->
+<!-- ==================================================== -->
+    <target name="clean-all" depends="clean">
+        <echo message="cleaning deployment directories and log files"/>
+        <delete file="${jboss.home}/standalone/deployments/${ant.project.name}.war"/>
+    </target>
+    
+</project>
