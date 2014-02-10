@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 1, 2013 9:35:37 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="org.earthChem.dal.hibernate.bean.ReferenceHbm" table="REFERENCE">
+        <id name="refNum" type="big_decimal">
+            <column name="REF_NUM" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="title" type="string">
+            <column name="TITLE" />
+        </property>
+        <property name="journal" type="string">
+            <column name="JOURNAL" />
+        </property>
+        <property name="volume" type="string">
+            <column name="VOLUME" />
+        </property>
+        <property name="issue" type="string">
+            <column name="ISSUE" />
+        </property>
+        <property name="firstPage" type="big_decimal">
+            <column name="FIRST_PAGE" precision="22" scale="0" />
+        </property>
+        <property name="lastPage" type="big_decimal">
+            <column name="LAST_PAGE" precision="22" scale="0" />
+        </property>
+        <property name="pubYear" type="big_decimal">
+            <column name="PUB_YEAR" precision="22" scale="0" />
+        </property>
+        <property name="bookTitle" type="string">
+            <column name="BOOK_TITLE" />
+        </property>
+        <property name="bookEditor" type="string">
+            <column name="BOOK_EDITOR" />
+        </property>
+        <property name="publisher" type="string">
+            <column name="PUBLISHER" />
+        </property>
+        <property name="dataEntered" type="string">
+            <column name="DATA_ENTERED" />
+        </property>
+        <property name="dataEnteredDate" type="timestamp">
+            <column name="DATA_ENTERED_DATE" length="7" />
+        </property>
+        <property name="publicationDoi" type="string">
+            <column name="PUBLICATION_DOI" length="128" />
+        </property>
+        <property name="status" type="string">
+            <column name="STATUS" length="20" />
+        </property>
+        <property name="publicComment" type="string">
+            <column name="PUBLIC_COMMENT" length="1000" />
+        </property>
+        <property name="internalComment" type="string">
+            <column name="INTERNAL_COMMENT" length="1000" />
+        </property>
+    </class>
+</hibernate-mapping>
