@@ -83,7 +83,9 @@
         <echo message="compiling java source code"/>
 
         <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}"
+        <javac  target="1.6" 
+                source="1.6"
+                srcdir="${src.dir}"
                 destdir="${classes.dir}"
                 debug="on"
                 deprecation="on"
