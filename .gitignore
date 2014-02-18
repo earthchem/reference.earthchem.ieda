@@ -6,7 +6,7 @@ tmp/**/*
 .pydevproject
 .project
 .metadata
-.bin
+bin/**/*
 *.tmp
 *.bak
 *~.nib
