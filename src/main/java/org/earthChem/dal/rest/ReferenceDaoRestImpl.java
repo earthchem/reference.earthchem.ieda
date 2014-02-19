@@ -181,6 +181,11 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 		throw new UnsupportedOperationException ("Method not supported");
 	}
 	
+	@Override
+	public void deleteReference(Integer refNum) {
+		throw new UnsupportedOperationException ("Method not supported");
+	}
+	
 	public static void main(String args[])
 	{
 		ReferenceDaoRestImpl worker=new ReferenceDaoRestImpl();

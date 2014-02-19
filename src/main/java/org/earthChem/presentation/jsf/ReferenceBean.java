@@ -201,6 +201,13 @@ public class ReferenceBean {
 		
 	}
 	
+	public void doDelete()
+	{		
+		this.referenceManager.deleteReference(selectedReference.getRefNum());		
+		selectedReference = null;
+		this.references = this.referenceManager.getReferences();
+	}
+	
 	public boolean getIsNew()
 	{
 		return this.isNew;

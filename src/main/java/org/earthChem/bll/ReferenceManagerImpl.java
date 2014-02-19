@@ -64,4 +64,7 @@ public class ReferenceManagerImpl implements ReferenceManager, Serializable {
 		this.hibernateReferenceDao.addOrUpdateReference(reference);
 	}
 
+	public void deleteReference(Integer refNum) {
+		this.hibernateReferenceDao.deleteReference(refNum);		
+	}
 }

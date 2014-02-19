@@ -19,4 +19,6 @@ public interface ReferenceManager {
 
 	public void addOrUpdateReference(Reference reference);
 	
+	public void deleteReference(Integer refNum);
+	
 }
