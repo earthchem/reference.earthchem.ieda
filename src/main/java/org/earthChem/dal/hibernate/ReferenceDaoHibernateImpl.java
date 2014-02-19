@@ -9,6 +9,7 @@ import java.util.List;
 import org.earthChem.dal.ReferenceDao;
 import org.earthChem.dal.hibernate.bean.ReferenceHbm;
 import org.earthChem.domain.Reference;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,6 +147,17 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 		Session session = sessionFactory.getCurrentSession();			
 	    session.saveOrUpdate(referenceHbm);
 	        
+	}
+	
+	public void deleteReference(Integer refNum) {
+		Session session = sessionFactory.getCurrentSession();
+		System.out.println("bc-deleteReference "+refNum);
+
+		Query query = session.createSQLQuery(
+				"CALL PRC_DEL_REF(:refNum)")
+				.addEntity(Reference.class)
+				.setParameter("refNum", refNum);
+				query.executeUpdate();
 	}
 
 	/********

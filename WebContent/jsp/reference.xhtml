@@ -25,13 +25,13 @@
                 rowsPerPageTemplate="5,10,15"
                 selection="#{referenceBean.selectedReference}"
                 selectionMode="single" onRowSelectUpdate="display">
-				<p:ajax event="rowSelect" update="editRef" />
-				 <p:ajax event="rowUnselect" update="editRef" />
+				<p:ajax event="rowSelect" update="editRef,deleteRef" />
+				<p:ajax event="rowUnselect" update="editRef,deleteRef" />
+				  <f:facet name="header">PetDB Reference</f:facet>
                 <p:column sortBy="#{reference.doi}" filterBy="#{reference.doi}">
                     <f:facet name="header">
                         <h:outputText value="DOI" />
-                    </f:facet>
-                    <f:facet name="header">PetDB Reference DOI Lookup</facet>
+                    </f:facet>               
                     <h:outputText value="#{reference.doi}" />
                 </p:column>
                 <p:column sortBy="#{reference.title}"  filterBy="#{reference.title}"
@@ -73,6 +73,12 @@
 					<p:commandButton id="addRef" value="Add"  
 				    	actionListener="#{referenceBean.doAdd}"
 			    		oncomplete="doiDialog.show()"/>
+			    		
+			    		<p:commandButton id="deleteRef" value="Delete"  
+				    	actionListener="#{referenceBean.doDelete}"
+				    	update=":editForm:refDataTable"
+				    	disabled="#{empty referenceBean.selectedReference}" 	onclick="if (!confirm('Are you sure you want to delete the selected record?')) return false"/>  			    
+			    	
 	  			</f:facet>  
             </p:dataTable>				           		
      </h:form>
@@ -85,6 +91,8 @@
 				actionListener="#{referenceBean.doSubmit}"
 				oncomplete="handleSubmitRequest(xhr, status, args)"/> 
     	</p:panel>
+    	
+    	
     </p:dialog>
      </h:form>
      <script type="text/javascript">  

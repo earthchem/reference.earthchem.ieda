@@ -30,4 +30,6 @@ public interface ReferenceDao {
 	 * @param reference
 	 */
 	public void addOrUpdateReference(Reference reference);
+	
+	public void deleteReference(Integer refNum);
 }
