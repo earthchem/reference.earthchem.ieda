@@ -15,7 +15,7 @@ public class Reference implements Serializable {
 	 */
 	private static final long serialVersionUID = -4935042020262262318L;
 
-	private String doi = "hi";
+	private String doi;
 
 	private Integer refNum;
 	private String title;
