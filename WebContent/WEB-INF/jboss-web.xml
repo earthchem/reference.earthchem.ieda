@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-web>
+    <!-- 
+    <security-domain>java:/jaas/josso</security-domain>
+     -->
+    <context-root>earthChem</context-root>
+</jboss-web>

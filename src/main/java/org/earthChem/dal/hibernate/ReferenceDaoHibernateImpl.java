@@ -151,7 +151,6 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 	
 	public void deleteReference(Integer refNum) {
 		Session session = sessionFactory.getCurrentSession();
-		System.out.println("bc-deleteReference "+refNum);
 
 		Query query = session.createSQLQuery(
 				"CALL PRC_DEL_REF(:refNum)")
