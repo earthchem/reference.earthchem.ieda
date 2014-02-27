@@ -21,7 +21,6 @@ public class ReferenceBean {
 
 	private ReferenceManager referenceManager;
 	private Reference reference=new Reference();
-	private String doi=null;
 	private Reference selectedReference;
 	private List<Reference> references;
 	private boolean isNew=false;
@@ -61,14 +60,7 @@ public class ReferenceBean {
         return statusOptions;  
     }  
 	
-	
-	public String getDoi() {
-		return doi;
-	}
-	public void setDoi(String doi) {
-		this.doi = doi;
-	}
-	
+
 	public Reference getSelectedReference() {
 		return selectedReference;
 	}
@@ -103,39 +95,36 @@ public class ReferenceBean {
 	 * to get the reference data for input doi
 	 */
 	public void doSubmit() {  
-        RequestContext context = RequestContext.getCurrentInstance();  
-        boolean validDoi = false;  
+		Integer refNum = reference.getRefNum();
+        String doi = reference.getDoi();
+        if(doi != null) doi = doi.trim();
         
         if (doi == null || doi.isEmpty())
         {
         	FacesContext.getCurrentInstance().addMessage(null, 
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 					"Validation Error:", "DOI must be entered"));
-        	validDoi=false;
+        //	validDoi=false;
         }
         else if (this.hasDoiBeUsed(doi))
         {
         	FacesContext.getCurrentInstance().addMessage(null, 
 								new FacesMessage(FacesMessage.SEVERITY_ERROR,
 								"Validation Error:", "A reference with input doi has been in the database."));
-        	validDoi  = false;
         }
         else
         {
 			try
 			{
 				this.reference=this.referenceManager.getReference(doi);
-				validDoi = true;
 			}
 			catch (Exception ex)
 			{
 				FacesContext.getCurrentInstance().addMessage(null, 
 						new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Validation Error:", "Entered Invalid DOI"));
-				validDoi=false;	
 			}
         }
-		context.addCallbackParam("validDoi", validDoi);
 		
 	}
 	
@@ -147,7 +136,8 @@ public class ReferenceBean {
 		boolean validRefNum=true;
 		if (this.isNew)  {
 			Integer refNum=reference.getRefNum();
-			if (refNum == null)
+		
+			if (refNum == null || refNum == 0)
 			{
 				FacesContext.getCurrentInstance().addMessage(null, 
 						new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -197,7 +187,7 @@ public class ReferenceBean {
 	{
 		this.reference= new Reference();
 		this.isNew = true;
-		doi = null;
+	//	doi = null;
 		
 	}
 	

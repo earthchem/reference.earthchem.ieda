@@ -59,11 +59,10 @@
             <fileset refid="required.jars"/>
         </copy>
 
-<!-- comment now since the directory is empty now -->
-<!--        <mkdir dir="${build.dir}/styles"/> -->
-<!--        <copy todir="${build.dir}/styles"> -->
-<!--            <fileset dir="${webapp.dir}/styles" includes="**/*"/> -->
-<!--        </copy> -->
+        <mkdir dir="${build.dir}/css"/>
+        <copy todir="${build.dir}/css">
+            <fileset dir="${webapp.dir}/css" includes="**/*"/>
+        </copy>
         
         <mkdir dir="${build.dir}/images"/>
         <copy todir="${build.dir}/images">
