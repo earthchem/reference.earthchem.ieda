@@ -11,6 +11,7 @@ bin/**/*
 *.bak
 *~.nib
 local.properties
+build.properties
 .classpath
 .settings/
 .loadpath
