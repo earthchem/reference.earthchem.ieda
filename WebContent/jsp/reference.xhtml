@@ -9,6 +9,7 @@
     <f:view contentType="text/html">
     <h:head>
         <title>DOI Lookup</title>
+          <link href="../css/redmond/jquery-ui-1.10.4.custom.css" rel="stylesheet"></link>	
     </h:head>
     <h:body>
     <h:form id="editForm">
@@ -20,6 +21,7 @@
     	<p:dataTable id="refDataTable" var="reference"
                 value="#{referenceBean.references}" paginator="true"
                 rows="10" 
+                style="width: 90%;"
                 rowKey="#{reference.refNum}"
                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                 rowsPerPageTemplate="5,10,15"
@@ -70,9 +72,12 @@
 				    	update=":detailForm:refData" 
 				    	disabled="#{empty referenceBean.selectedReference}"
 			    		oncomplete="referenceDialog.show()"/>    
-					<p:commandButton id="addRef" value="Add"  
+						
+			    		
+			    		<p:commandButton id="addRef" value="Add"  
 				    	actionListener="#{referenceBean.doAdd}"
-			    		oncomplete="doiDialog.show()"/>
+				    	update=":detailForm:refData" 
+			    		oncomplete="referenceDialog.show()"/>
 			    		
 			    		<p:commandButton id="deleteRef" value="Delete"  
 				    	actionListener="#{referenceBean.doDelete}"
@@ -82,45 +87,16 @@
 	  			</f:facet>  
             </p:dataTable>				           		
      </h:form>
-     <h:form id="addForm">
-    <p:dialog header="Please enter DOI" widgetVar="doiDialog" showEffect="fade" hideEffect="fade" modal="true">  
-        <p:panel id="doiPanel">
-        	<p:messages id="mainMsgs" showDetail="true" autoUpdate="true" />
-	    	<p:inputText id="doi" value="#{referenceBean.doi}" size="35"/>   						
-			<p:commandButton id="submit" value="Look Up" update=":detailForm:refData,doiPanel" 
-				actionListener="#{referenceBean.doSubmit}"
-				oncomplete="handleSubmitRequest(xhr, status, args)"/> 
-    	</p:panel>
-    	
-    	
-    </p:dialog>
-     </h:form>
-     <script type="text/javascript">  
-    function handleSubmitRequest(xhr, status, args) {  
-        if(args.validDoi) {  
-            referenceDialog.show();  
-            doiDialog.hide();
-        }  
-        else
-        {
-        	referenceDialog.hide();  
-            doiDialog.show();
-        }
-        
-    }  
+    <script type="text/javascript">  
     function handleSaveRequest(xhr, status, args) {  
         if(args.validRefNum) {  
             referenceDialog.hide(); 
-            doiDialog.hide();
-        }  
-        else
-        {
-        	referenceDialog.show();  
-        	doiDialog.hide();
+        } else {
+        	referenceDialog.show(); 
         }
-        
     }  
 </script>  
+    
      <h:form id="detailForm">
     <p:dialog header="Reference" widgetVar="referenceDialog" showEffect="fade" hideEffect="fade" modal="true">
     	<p:panel id="refData"> 
@@ -128,11 +104,19 @@
 		    <p:panelGrid>
 		        <p:row>  
 		            <p:column colspan="1"><h:outputText value="DOI: " /></p:column> 
-		            <p:column colspan="1"><p:inputText value="#{referenceBean.reference.doi}"/></p:column> 
+		            <p:column colspan="1"><p:inputText value="#{referenceBean.reference.doi}"/>
+		     	<p:commandButton id="submit" value="Look Up" update=":detailForm:refData" 
+		            rendered ="#{referenceBean.isNew}" required="true" 
+					actionListener="#{referenceBean.doSubmit}"/> 
+					
+		            </p:column> 
 		            <p:column colspan="1"><h:outputText value="Ref Number:" /></p:column> 
 		            <p:column colspan="1">
-		            	<p:inputMask id="refNumField" mask="9999" value="#{referenceBean.reference.refNum}" required="true" 
+		      
+		          	<p:inputMask id="refNumField" mask="9?99999" 
+   					maxlength="6" value="#{referenceBean.reference.refNum}" 
 		            		rendered ="#{referenceBean.isNew}" />
+		  
 		            	<h:outputText value="#{referenceBean.reference.refNum}"
 		             		rendered="#{not referenceBean.isNew}"/>
 		            </p:column>
@@ -200,7 +184,7 @@
 				    <p:commandButton id="save" value="Save"  
 				    	actionListener="#{referenceBean.doSave}"
 				    	update="refData,:editForm:refDataTable"
-			    		oncomplete="handleSaveRequest(xhr, status, args)"/>    
+			    		oncomplete="handleSaveRequest(xhr, status, args)"/>      
 	  	 </f:facet>  
     </p:dialog>  
       </h:form>
