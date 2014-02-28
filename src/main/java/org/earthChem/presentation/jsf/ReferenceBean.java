@@ -187,7 +187,6 @@ public class ReferenceBean {
 	{
 		this.reference= new Reference();
 		this.isNew = true;
-	//	doi = null;
 		
 	}
 	

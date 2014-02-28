@@ -153,7 +153,7 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 		Session session = sessionFactory.getCurrentSession();
 
 		Query query = session.createSQLQuery(
-				"CALL PRC_DEL_REF(:refNum)")
+				"CALL PRC_DEL_REF_CASCADE(:refNum)")
 				.addEntity(Reference.class)
 				.setParameter("refNum", refNum);
 				query.executeUpdate();
