@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.earthChem.domain.Reference;
+import org.earthChem.exception.InvalidDoiException;
 
 /*******
  * To handle REST request
@@ -25,7 +26,11 @@ public class ReferencesRRH extends BaseRRH{
     public Response getReference(@PathParam("doi_root") String doiRoot,  @PathParam("doi") String doi) {
 		Reference reference=null;
 		String doiString=doiRoot + "/" + doi;
-		reference = this.getReferenceManager().getReference(doiString);
+		try {
+			reference = this.getReferenceManager().getReference(doiString);
+		} catch (InvalidDoiException e) {
+            return this.createErrorResponse(OBJECT_NOT_FOUND + "Can't find reference for given doi:" + doi);
+		}
 
 		if (reference != null) {
             return this.createOkResponse(reference, MediaType.APPLICATION_JSON);
