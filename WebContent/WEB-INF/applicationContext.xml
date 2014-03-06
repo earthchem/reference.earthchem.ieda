@@ -2,32 +2,61 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:jee="http://www.springframework.org/schema/jee"
     xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd
-		http://www.springframework.org/schema/jee
-		http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
         
 	<tx:annotation-driven/>
     
     <context:annotation-config/>
-<!-- 
-    <jee:jndi-lookup id="dataSource" jndi-name="java:/jdbc/EarthChemDS" />  -->
-    <jee:jndi-lookup id="dataSource" jndi-name="java:jboss/datasources/loadpetdbDS" />    
     
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+
+	<!-- Configurer that replaces ${...} placeholders with values from properties files -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/classes/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>	  
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass">
+			<value>${jdbc.driverClassName}</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>${jdbc.url}</value>
+		</property>
+		<property name="checkoutTimeout" value="30000"/>
+		<property name="acquireIncrement" value="5"/>
+		<property name="maxPoolSize" value="200"/>
+		<property name="minPoolSize" value="1"/>
+		<property name="initialPoolSize" value="1"/>
+		<property name="maxStatements" value="0"/>
+		<property name="maxStatementsPerConnection" value="60"/>
+		<property name="preferredTestQuery" value="select 1 from dual"/>
+		<property name="maxIdleTimeExcessConnections" value="900"/>
+		<property name="testConnectionOnCheckout" value="true"/>
+		<property name="user" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+
 	<!-- Database Property -->
 	<bean id="hibernateProperties"
 		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 		<property name="properties">
 			<props>
 				<prop key="hibernate.dialect">
-					org.hibernate.dialect.Oracle10gDialect
+					org.hibernate.dialect.OracleDialect
 				</prop>
 				<prop key="hibernate.show_sql">false</prop>
 			</props>
@@ -37,24 +66,21 @@
 	<!-- Hibernate SessionFactory -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="mappingLocations" value="classpath:**/*.hbm.xml"/>
-        <property name="hibernateProperties">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="hibernateProperties">
 			<ref bean="hibernateProperties" />
 		</property>
+		<!--  OR mapping files. -->
 		<property name="mappingResources">
 			<list>
 				<value>org/earthChem/dal/hibernate/bean/ReferenceHbm.hbm.xml</value>
 			</list>
 		</property>
-		
-		       
-    </bean>
-    
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-     
+	</bean>
+
+   
     <bean id="restReferenceDao" class="org.earthChem.dal.rest.ReferenceDaoRestImpl"/>
     
     <bean id="hibernateReferenceDao" class="org.earthChem.dal.hibernate.ReferenceDaoHibernateImpl"/>

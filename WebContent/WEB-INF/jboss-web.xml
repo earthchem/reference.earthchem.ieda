@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jboss-web>
-    <!--  Declare security domain josso -->
+    <!-- 
     <security-domain>java:/jaas/josso</security-domain>
+     -->
     <context-root>earthChem</context-root>
 </jboss-web>
