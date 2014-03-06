@@ -5,6 +5,14 @@
   <welcome-file-list>
         <welcome-file>hello.xhtml</welcome-file>
     </welcome-file-list>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/login-redirect.jsp</form-login-page>
+            <form-error-page>/login-redirect.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
+    
     <!--  
     <context-param>  
     	<param-name>primefaces.THEME</param-name>  
@@ -40,6 +48,10 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsp</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.jsf</url-pattern>

@@ -34,7 +34,7 @@
         <echo message="creating the build directory structure"/>   
         <mkdir dir="${build.dir}"/>
         <copy todir="${build.dir}">
-            <fileset dir="${webapp.dir}" includes="*.xhtml"/>
+            <fileset dir="${webapp.dir}" includes="*.xhtml *.jsp *.jsf *.html"/>
         </copy>
 
         <mkdir dir="${build.dir}/WEB-INF"/>
