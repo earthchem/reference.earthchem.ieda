@@ -17,6 +17,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.earthChem.dal.ReferenceDao;
 import org.earthChem.domain.Reference;
+import org.earthChem.exception.InvalidDoiException;
 
 /*****
  * REST implementation for ReferenceDao
@@ -41,12 +42,15 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 	public static final String EDITOR="editor";
 	public static final String PAGE="page";
 	public static final String TYPE="type";
+	public static final String RAW="raw";
+
 	
 	/*******
 	 * get reference data from doi.org server
+	 * @throws InvalidDoiException 
 	 */
 	@Override
-	public Reference getReferenceByDoi(String doi) {
+	public Reference getReferenceByDoi(String doi) throws InvalidDoiException {
 		Reference result=new Reference();
 		
 		String json=this.getDataFromDoiServer(doi);
@@ -81,15 +85,26 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 				JSONObject issuedJo=jo.getJSONObject(ISSUED);
 				if (issuedJo != null) 
 				{	
-					JSONArray dateParts=issuedJo.getJSONArray(DATE);
-					if (dateParts != null)
-					{	
-						JSONArray yearArray=dateParts.getJSONArray(0);
-						if (yearArray != null)
-						{
-							String year=yearArray.getString(0);
-							result.setPubYear(new BigDecimal(year));
+					if (issuedJo.has(DATE))
+					{
+						JSONArray dateParts=issuedJo.getJSONArray(DATE);
+						if (dateParts != null)
+						{	
+							JSONArray yearArray=dateParts.getJSONArray(0);
+							if (yearArray != null)
+							{
+								String year=yearArray.getString(0);
+								if (year != null && year.isEmpty() == false)	
+									result.setPubYear(new BigDecimal(year));
+							}
 						}
+					}
+					else if (issuedJo.has(RAW))
+					{
+						String year=issuedJo.getString(RAW);
+						if (year != null && year.isEmpty() == false)
+							result.setPubYear(new BigDecimal(year));
+						
 					}
 				}
 			}
@@ -106,8 +121,9 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 	 * 
 	 * @param doi
 	 * @return
+	 * @throws InvalidDoiException 
 	 */
-	protected String getDataFromDoiServer(final String doi)
+	protected String getDataFromDoiServer(final String doi) throws InvalidDoiException
 	{
 		try {
 			 
@@ -136,6 +152,11 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 	 
 			HttpResponse response = httpClient.execute(getRequest);
 	 
+
+			if (response.getStatusLine().getStatusCode() == 404) {
+				throw new InvalidDoiException("Invalid DOI");
+			}
+			
 			if (response.getStatusLine().getStatusCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "
 				   + response.getStatusLine().getStatusCode());
@@ -186,10 +207,20 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 		throw new UnsupportedOperationException ("Method not supported");
 	}
 	
-	public static void main(String args[])
-	{
+	public static void main(String args[]) {
 		ReferenceDaoRestImpl worker=new ReferenceDaoRestImpl();
-		Reference re=worker.getReferenceByDoi("10.1126/science.169.3946.635");
-		System.out.print(re.toString());
+		Reference re;
+		try {
+			re = worker.getReferenceByDoi("10.1126/science.169.3946.635");
+			System.out.println(re.toString());
+			re=worker.getReferenceByDoi("10.1594/IEDA/100422");
+			System.out.println(re.toString());
+			re=worker.getReferenceByDoi("xbxyx10.1594/IEDA/100422");
+			System.out.println(re.toString());
+		} catch (InvalidDoiException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
 	}
 }
