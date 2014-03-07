@@ -10,6 +10,7 @@ import javax.faces.model.SelectItem;
 
 import org.earthChem.bll.ReferenceManager;
 import org.earthChem.domain.Reference;
+import org.earthChem.exception.InvalidDoiException;
 import org.primefaces.context.RequestContext;
 
 /*********
@@ -118,11 +119,19 @@ public class ReferenceBean {
 			{
 				this.reference=this.referenceManager.getReference(doi);
 			}
-			catch (Exception ex)
+			catch (InvalidDoiException ie)
 			{
 				FacesContext.getCurrentInstance().addMessage(null, 
 						new FacesMessage(FacesMessage.SEVERITY_ERROR,
 						"Validation Error:", "Entered Invalid DOI"));
+				//validDoi=false;	
+			}
+			catch (Exception ex)
+			{
+				FacesContext.getCurrentInstance().addMessage(null, 
+						new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"System Error:", ex.getMessage()));
+				//validDoi=false;	
 			}
         }
 		

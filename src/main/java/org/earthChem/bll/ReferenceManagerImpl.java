@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.earthChem.dal.ReferenceDao;
 import org.earthChem.domain.Reference;
+import org.earthChem.exception.InvalidDoiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +25,11 @@ public class ReferenceManagerImpl implements ReferenceManager, Serializable {
 	/****
 	 * to get reference data from database first. If not exists, get it from doi.org server using RESTful
 	 * services.
+	 * @throws InvalidDoiException 
 	 * 
 	 */
 	@Override
-	public Reference getReference(final String doi) {
+	public Reference getReference(final String doi) throws InvalidDoiException {
 		Reference ref=this.hibernateReferenceDao.getReferenceByDoi(doi);
 		if (ref == null)
 			ref=this.restReferenceDao.getReferenceByDoi(doi);

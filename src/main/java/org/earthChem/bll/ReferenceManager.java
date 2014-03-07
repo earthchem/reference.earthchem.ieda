@@ -3,6 +3,7 @@ package org.earthChem.bll;
 import java.util.List;
 
 import org.earthChem.domain.Reference;
+import org.earthChem.exception.InvalidDoiException;
 
 /****
  * Interface to manage reference data
@@ -11,7 +12,7 @@ import org.earthChem.domain.Reference;
  *
  */
 public interface ReferenceManager {
-	public Reference getReference(final String doi);
+	public Reference getReference(final String doi) throws InvalidDoiException;
 
 	public List<String> getStatuses();
 	
