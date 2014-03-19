@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+	  
+    <f:view contentType="text/html">
+    <h:head>
+        <title>Log In</title>
+          <link href="css/redmond/jquery-ui-1.10.4.custom.css" rel="stylesheet"></link>	
+    </h:head>
+    <h:body>
+    <h:form id="form"> 
+
+       <p:growl id="growl" showDetail="true" life="3000" />
+
+		<h:panelGrid columns="2" cellpadding="5">
+			<h:outputLabel for="username" value="Username:" />
+			<p:inputText value="#{userAccountBean.username}" 
+					id="username" required="true" label="username" />
+			
+			<h:outputLabel for="password" value="Password:" />
+			<h:inputSecret value="#{userAccountBean.password}" 
+					id="password" required="true" label="password" />
+			
+			<f:facet name="footer">
+				<p:commandButton id="loginButton" value="Login" update="growl" 
+					actionListener="#{userAccountBean.login}" 
+					oncomplete="handleLoginRequest(xhr, status, args)"/>
+			</f:facet>
+		</h:panelGrid>
+		    
+</h:form>
+<script type="text/javascript">
+	function handleLoginRequest(xhr, status, args) {
+        if(args.loggedIn) {
+			window.location="reference.xhtml";
+        }
+	}
+</script>
+   
+   
+   </h:body>
+	
+    </f:view>
+    
+</html>
