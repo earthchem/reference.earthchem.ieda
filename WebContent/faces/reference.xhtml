@@ -5,11 +5,12 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-	  
     <f:view contentType="text/html">
     <h:head>
         <title>DOI Lookup</title>
-          <link href="css/redmond/jquery-ui-1.10.4.custom.css" rel="stylesheet"></link>	
+        <!-- 
+        <link href="#{request.contextPath}/css/redmond/jquery-ui-1.10.4.custom.css" rel="stylesheet"></link>	
+         -->
     </h:head>
     <h:body>
     <h:form id="editForm">
@@ -17,7 +18,7 @@
         <p:dialog modal="true" widgetVar="statusDialog" header="Please Wait ..."   
        		draggable="false" closable="false">  
     		<p:graphicImage value="/images/loading.gif" />  
-		</p:dialog>  
+		</p:dialog>
     	<p:dataTable id="refDataTable" var="reference"
                 value="#{referenceBean.references}" paginator="true"
                 rows="10" 
@@ -71,8 +72,7 @@
 				    	actionListener="#{referenceBean.doEdit}"
 				    	update=":detailForm:refData" 
 				    	disabled="#{empty referenceBean.selectedReference}"
-			    		oncomplete="referenceDialog.show()"/>    
-						
+			    		oncomplete="referenceDialog.show()"/>						
 			    		
 			    		<p:commandButton id="addRef" value="Add"  
 				    	actionListener="#{referenceBean.doAdd}"
@@ -82,8 +82,7 @@
 			    		<p:commandButton id="deleteRef" value="Delete"  
 				    	actionListener="#{referenceBean.doDelete}"
 				    	update=":editForm:refDataTable"
-				    	disabled="#{empty referenceBean.selectedReference}" 	onclick="if (!confirm('Are you sure you want to delete the selected record?')) return false"/>  			    
-			    	
+				    	disabled="#{empty referenceBean.selectedReference}" 	onclick="if (!confirm('Are you sure you want to delete the selected record?')) return false"/>			    	
 	  			</f:facet>  
             </p:dataTable>				           		
      </h:form>

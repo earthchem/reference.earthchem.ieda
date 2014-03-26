@@ -9,40 +9,21 @@
     <f:view contentType="text/html">
     <h:head>
         <title>Log In</title>
-          <link href="css/redmond/jquery-ui-1.10.4.custom.css" rel="stylesheet"></link>	
+          <link href="#{request.contextPath}/css/redmond/jquery-ui-1.10.4.custom.css" rel="stylesheet"></link>	
     </h:head>
     <h:body>
-    <h:form id="form"> 
+        <h2>PetDB Doi Lookup Login Page:</h2>
+        <form name="loginForm" method="POST" action="j_security_check">
+            <p><strong>Username: </strong>
+                <input type="text" name="j_username" size="25"/></p>
+            <p><strong>Password: </strong>
+                <input type="password" size="15" name="j_password"/></p>
+            <p>
+                <input type="submit" value="Submit"/>
+                <input type="reset" value="Reset"/></p>
+        </form>       
+    </h:body>
 
-       <p:growl id="growl" showDetail="true" life="3000" />
-
-		<h:panelGrid columns="2" cellpadding="5">
-			<h:outputLabel for="username" value="Username:" />
-			<p:inputText value="#{userAccountBean.username}" 
-					id="username" required="true" label="username" />
-			
-			<h:outputLabel for="password" value="Password:" />
-			<h:inputSecret value="#{userAccountBean.password}" 
-					id="password" required="true" label="password" />
-			
-			<f:facet name="footer">
-				<p:commandButton id="loginButton" value="Login" update="growl" 
-					actionListener="#{userAccountBean.login}" 
-					oncomplete="handleLoginRequest(xhr, status, args)"/>
-			</f:facet>
-		</h:panelGrid>
-		    
-</h:form>
-<script type="text/javascript">
-	function handleLoginRequest(xhr, status, args) {
-        if(args.loggedIn) {
-			window.location="reference.xhtml";
-        }
-	}
-</script>
-   
-   
-   </h:body>
 	
     </f:view>
     

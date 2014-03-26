@@ -3,23 +3,25 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <!-- Welcome page -->
   <welcome-file-list>
-        <welcome-file>reference.xhtml</welcome-file>
+        <welcome-file>/faces/reference.xhtml</welcome-file>
     </welcome-file-list>
-    <!--  
+
+<!-- 
     <context-param>  
     	<param-name>primefaces.THEME</param-name>  
     	<param-value>bluesky</param-value>  
 	</context-param>
-    -->
+--> 
 	<context-param>  
 	<param-name>contextConfigLocation</param-name>  
     	<param-value>/WEB-INF/applicationContext.xml</param-value>  
-	</context-param>  
+	</context-param>
+	
 	<context-param>
     	<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
     	<param-value>client</param-value>
 	</context-param>
-	
+	 
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
@@ -40,49 +42,35 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-    <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.jsf</url-pattern>
-    </servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.faces</url-pattern>
-	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>/faces/*</url-pattern>
-	</servlet-mapping>
-	 
+	</servlet-mapping>	 
     
     <servlet-mapping>
-    <servlet-name>javax.ws.rs.core.Application</servlet-name>
-    <url-pattern>/rest/*</url-pattern>
-  </servlet-mapping>
+      <servlet-name>javax.ws.rs.core.Application</servlet-name>
+      <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
  
-  <!-- 
   <login-config>
 	  <auth-method>FORM</auth-method>
 	  <form-login-config>
 	     <form-login-page>/login.xhtml</form-login-page>
-	     <form-error-page>/login.xhtml</form-error-page>
+	     <form-error-page>/error.xhtml</form-error-page>
 	  </form-login-config>  
   </login-config>	 
-  -->
-  
+	
+  <!--  
      <login-config>
 	  <auth-method>BASIC</auth-method>
 	</login-config>	
-
- 	
+   -->
+     
   <security-constraint>
       <display-name>PetDB Reference Security Login</display-name>
       <web-resource-collection>
          <web-resource-name>Protected Area</web-resource-name>
-         <url-pattern>*.xhtml</url-pattern>     
+         <url-pattern>/faces/*</url-pattern>     
          <http-method>DELETE</http-method>
          <http-method>GET</http-method>
          <http-method>POST</http-method>
@@ -93,6 +81,11 @@
          <role-name>Manager</role-name>
          <role-name>Admin</role-name>
       </auth-constraint>
+      
+      <user-data-constraint>
+         <transport-guarantee>NONE</transport-guarantee>
+      </user-data-constraint>
+      
     </security-constraint>
 	
     <security-role>
@@ -105,4 +98,14 @@
     <security-role>
       <role-name>Admin</role-name>
     </security-role>
+    
+       <session-config>
+      <session-timeout>300</session-timeout>
+   </session-config>
+
+   <error-page>
+      <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+      <location>/login.xhtml</location>
+   </error-page> 
+    
 </web-app>

@@ -68,6 +68,11 @@
         <copy todir="${build.dir}/images">
             <fileset dir="${webapp.dir}/images" includes="**/*"/>
         </copy>
+    	
+    	<mkdir dir="${build.dir}/faces"/>
+    	<copy todir="${build.dir}/faces">
+    	      <fileset dir="${webapp.dir}/faces" includes="**/*"/>
+     </copy>
 		
     </target>   
 
@@ -89,6 +94,7 @@
             	<pathelement location="${rs.jar}"/>
                 <pathelement location="${servlet.jar}"/>
                 <pathelement location="${jsp.jar}"/>
+            	<pathelement location="${picketbox.jar}"/>
                 <fileset refid="required.jars"/>
             </classpath>
             <compilerarg value="-Xlint"/>
