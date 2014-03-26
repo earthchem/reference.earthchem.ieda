@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
-  <!-- Welcome page -->
+  <!-- Welcome page
   <welcome-file-list>
         <welcome-file>/faces/reference.xhtml</welcome-file>
     </welcome-file-list>
-
+ -->
 <!-- 
     <context-param>  
     	<param-name>primefaces.THEME</param-name>  
@@ -99,13 +99,23 @@
       <role-name>Admin</role-name>
     </security-role>
     
-       <session-config>
-      <session-timeout>300</session-timeout>
+   <session-config>
+      <session-timeout>1</session-timeout>
    </session-config>
 
    <error-page>
       <exception-type>javax.faces.application.ViewExpiredException</exception-type>
-      <location>/login.xhtml</location>
+      <location>/expired.xhtml</location>   
    </error-page> 
-    
+   
+   <error-page>
+    <error-code>404</error-code>
+    <location>/notFound.xhtml</location>
+   </error-page>
+   
+   <error-page>
+    <error-code>500</error-code>
+    <location>/serverError.xhtml</location>
+   </error-page>
+   
 </web-app>
