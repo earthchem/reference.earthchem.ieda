@@ -6,14 +6,5 @@
      
     <security-domain>java:/jaas/loadpetdblogin</security-domain>
     <context-root>earthChem</context-root>
-    
- <!--  
-     <resource-ref>
 
-         <res-ref-name>loadpetdbDS-ref</res-ref-name>
-
-         <jndi-name>java:jboss/datasources/loadpetdbDS</jndi-name>
-
-      </resource-ref>
- -->
 </jboss-web>

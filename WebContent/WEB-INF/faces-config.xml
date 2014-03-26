@@ -30,4 +30,5 @@
 	          <value>#{userAccountManager}</value>  
            </managed-property>  
 	</managed-bean>
+
 </faces-config>
