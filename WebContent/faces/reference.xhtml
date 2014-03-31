@@ -14,6 +14,11 @@
     </h:head>
     <h:body>
     <h:form id="editForm">
+	<table width="90%">
+	<tr><td><h2>PetDB Reference</h2></td>
+	<td align="right"><p:commandButton id="logout" value="Logout"  
+				    	action="#{userAccountBean.logout}"/>			
+	</td></tr></table> 
     	<p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
         <p:dialog modal="true" widgetVar="statusDialog" header="Please Wait ..."   
        		draggable="false" closable="false">  
@@ -30,7 +35,6 @@
                 selectionMode="single" onRowSelectUpdate="display">
 				<p:ajax event="rowSelect" update="editRef,deleteRef" />
 				<p:ajax event="rowUnselect" update="editRef,deleteRef" />
-				  <f:facet name="header">PetDB Reference</f:facet>
                 <p:column sortBy="#{reference.doi}" filterBy="#{reference.doi}">
                     <f:facet name="header">
                         <h:outputText value="DOI" />

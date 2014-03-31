@@ -72,5 +72,8 @@ public class UserAccountBean {
 				context.addCallbackParam("loggedIn", loggedIn);	
 	}
 	
-	
+	public String logout(){
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		return "/login.xhtml/logout?faces-redirect=true";
+	}
 }
