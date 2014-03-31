@@ -19,6 +19,6 @@ public class LogoutBean {
 
 	public String logout(){
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		return "/login.xhtml/logout?faces-redirect=true";
+		return "/faces/reference.xhtml/logout?faces-redirect=true";
 	}
 }
