@@ -22,13 +22,9 @@
 	</managed-bean>
 	
 	<managed-bean>
-		<managed-bean-name>userAccountBean</managed-bean-name>
-		<managed-bean-class>org.earthChem.presentation.jsf.UserAccountBean</managed-bean-class>
+		<managed-bean-name>logoutBean</managed-bean-name>
+		<managed-bean-class>org.earthChem.presentation.jsf.LogoutBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
-		<managed-property> 
-		 <property-name>userAccountManager</property-name>  
-	          <value>#{userAccountManager}</value>  
-           </managed-property>  
 	</managed-bean>
 
 </faces-config>

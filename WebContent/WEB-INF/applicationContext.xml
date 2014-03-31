@@ -45,7 +45,6 @@
 		<property name="mappingResources">
 			<list>
 				<value>org/earthChem/dal/hibernate/bean/ReferenceHbm.hbm.xml</value>
-				<value>org/earthChem/dal/hibernate/bean/UserAccountHbm.hbm.xml</value>
 			</list>
 		</property>
 		
@@ -61,9 +60,6 @@
     <bean id="hibernateReferenceDao" class="org.earthChem.dal.hibernate.ReferenceDaoHibernateImpl"/>
     <bean id="referenceManager"
 		class="org.earthChem.bll.ReferenceManagerImpl" />
-
-   	 <bean id="hibernateUserAccountDao" class="org.earthChem.dal.hibernate.UserAccountDaoHibernateImpl"/>
-     <bean id="userAccountManager" class="org.earthChem.bll.UserAccountManagerImpl" />
     
 </beans>
 
