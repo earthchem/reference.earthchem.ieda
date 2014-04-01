@@ -1,6 +1,8 @@
 package org.earthChem.presentation.rest;
 
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.servlet.ServletContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Request;
@@ -21,6 +23,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * @author bsun
  *
  */
+@ManagedBean
+@RequestScoped
 public class BaseRRH
 {
 	@Context

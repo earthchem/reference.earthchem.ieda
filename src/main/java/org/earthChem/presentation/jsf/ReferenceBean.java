@@ -1,13 +1,12 @@
 package org.earthChem.presentation.jsf;
 
-import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-
 import org.earthChem.bll.ReferenceManager;
 import org.earthChem.domain.Reference;
 import org.earthChem.exception.InvalidDoiException;
@@ -18,6 +17,8 @@ import org.primefaces.context.RequestContext;
  *
  *
  */
+@ManagedBean
+@SessionScoped
 public class ReferenceBean {
 
 	private ReferenceManager referenceManager;
@@ -96,7 +97,7 @@ public class ReferenceBean {
 	 * to get the reference data for input doi
 	 */
 	public void doSubmit() {  
-		Integer refNum = reference.getRefNum();
+	//	Integer refNum = reference.getRefNum();
         String doi = reference.getDoi();
         if(doi != null) doi = doi.trim();
         

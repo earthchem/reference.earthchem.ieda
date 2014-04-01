@@ -1,5 +1,7 @@
 package org.earthChem.presentation.rest;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -17,6 +19,8 @@ import org.earthChem.exception.InvalidDoiException;
  *
  */
 @Path("references")
+@ManagedBean
+@RequestScoped
 public class ReferencesRRH extends BaseRRH{
 	final static public String OBJECT_NOT_FOUND = "Object not found.";
 

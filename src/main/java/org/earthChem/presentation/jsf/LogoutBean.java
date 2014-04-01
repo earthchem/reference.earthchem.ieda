@@ -1,20 +1,17 @@
 package org.earthChem.presentation.jsf;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.faces.model.SelectItem;
+import javax.faces.bean.ManagedBean;
 
-import org.earthChem.bll.ReferenceManager;
-import org.primefaces.context.RequestContext;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /*********
  * JSF Backing Bean for Logout Page
  *
  *
  */
+@ManagedBean
+@SessionScoped
 public class LogoutBean {
 
 	public String logout(){
