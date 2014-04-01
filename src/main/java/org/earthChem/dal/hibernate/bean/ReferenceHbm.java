@@ -11,8 +11,7 @@ import java.util.Date;
 
 public class ReferenceHbm  implements java.io.Serializable {
 
-    // Fields    
-
+    // Fields
      private BigDecimal refNum;
      private String title;
      private String journal;
