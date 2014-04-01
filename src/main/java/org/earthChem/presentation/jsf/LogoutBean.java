@@ -1,6 +1,7 @@
 package org.earthChem.presentation.jsf;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -15,7 +16,13 @@ import org.primefaces.context.RequestContext;
  *
  *
  */
-public class LogoutBean {
+public class LogoutBean implements Serializable {
+	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public String logout(){
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
