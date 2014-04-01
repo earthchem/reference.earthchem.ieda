@@ -1,5 +1,6 @@
 package org.earthChem.presentation.jsf;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -19,16 +20,26 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ReferenceBean {
-
+public class ReferenceBean implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8587883572157433057L;
 	private ReferenceManager referenceManager;
 	private Reference reference=new Reference();
 	private Reference selectedReference;
 	private List<Reference> references;
 	private boolean isNew=false;
 	private SelectItem[] statusOptions=null;
+	private List<Reference> filteredReference;
 	
 	
+	public List<Reference> getFilteredReference() {
+		return filteredReference;
+	}
+	public void setFilteredReference(List<Reference> filteredReference) {
+		this.filteredReference = filteredReference;
+	}
 	public ReferenceManager getReferenceManager() {
 		return referenceManager;
 	}
