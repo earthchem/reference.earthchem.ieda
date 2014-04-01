@@ -70,6 +70,7 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 		reference.setDataEnteredDate(referenceHbm.getDataEnteredDate());
 		reference.setStatus(referenceHbm.getStatus());
 		reference.setPublicComment(referenceHbm.getPublicComment());
+		reference.setInternalComment(referenceHbm.getInternalComment());
 	}
 	
 	protected ReferenceHbm getReferenceHbm(final BigDecimal refNum)
@@ -183,6 +184,7 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 		referenceHbm.setDataEnteredDate(reference.getDataEnteredDate());
 		referenceHbm.setStatus(reference.getStatus());
 		referenceHbm.setPublicComment(reference.getPublicComment());
+		referenceHbm.setInternalComment(reference.getInternalComment());
 		
 	}
 

@@ -32,6 +32,14 @@ public class Reference implements Serializable {
 	private Date dataEnteredDate;
 	private String status;
 	private String publicComment;
+	private String internalComment;
+	
+	public String getInternalComment() {
+		return internalComment;
+	}
+	public void setInternalComment(String internalComment) {
+		this.internalComment = internalComment;
+	}
 	public String getDoi() {
 		return doi;
 	}
