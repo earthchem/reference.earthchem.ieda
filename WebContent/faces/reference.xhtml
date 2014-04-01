@@ -25,7 +25,7 @@
     		<p:graphicImage value="/images/loading.gif" />  
 		</p:dialog>
     	<p:dataTable id="refDataTable" var="reference"
-                value="#{referenceBean.references}" paginator="true"
+                value="#{referenceBean.references}" paginator="true" filteredValue="#{referenceBean.filteredReference}" 
                 rows="10" 
                 style="width: 90%;"
                 rowKey="#{reference.refNum}"
@@ -35,37 +35,30 @@
                 selectionMode="single" onRowSelectUpdate="display">
 				<p:ajax event="rowSelect" update="editRef,deleteRef" />
 				<p:ajax event="rowUnselect" update="editRef,deleteRef" />
-                <p:column sortBy="#{reference.doi}" filterBy="#{reference.doi}">
-                    <f:facet name="header">
-                        <h:outputText value="DOI" />
-                    </f:facet>               
+				<p:column sortBy="refNum" filterBy="refNum"
+                   headerText="Ref Number">  
+                    <h:outputText value="#{reference.refNum}" />
+                </p:column>
+           
+                <p:column sortBy="doi" filterBy="doi" headerText="DOI" >             
                     <h:outputText value="#{reference.doi}" />
                 </p:column>
-                <p:column sortBy="#{reference.title}"  filterBy="#{reference.title}"
-                	filterMatchMode="contains">
-                    <f:facet name="header">
-                        <h:outputText value="Title" />
-                    </f:facet>
+               <p:column sortBy="title"  filterBy="title"
+                	filterMatchMode="contains" headerText="Title">
                     <h:outputText value="#{reference.title}" />
                 </p:column>
-                <p:column sortBy="#{reference.journal}" filterBy="#{reference.journal}"
-                	filterMatchMode="contains">
-                    <f:facet name="header">
-                        <h:outputText value="Journal" />
-                    </f:facet>
+             <p:column sortBy="journal" filterBy="journal"
+                	filterMatchMode="contains" headerText="Journal">
                     <h:outputText value="#{reference.journal}" />
                 </p:column>
-                <p:column sortBy="#{reference.volume}">
-                    <f:facet name="header">
-                        <h:outputText value="Volume" />
-                    </f:facet>
+                <p:column sortBy="volume" headerText="Volume" >
                     <h:outputText value="#{reference.volume}" />
                 </p:column>
-                <p:column sortBy="#{reference.issue}" headerText="Issue">
+                <p:column sortBy="issue" headerText="Issue">
                     <h:outputText value="#{reference.issue}" />
                 </p:column>
                                
-                <p:column sortBy="#{reference.status}" filterBy="#{reference.status}"
+                <p:column sortBy="status" filterBy="status"
                     headerText="Status"
                     filterOptions="#{referenceBean.statusOptions}"  
                 	filterMatchMode="exact" filterStyle="width:200px;">
@@ -88,6 +81,7 @@
 				    	update=":editForm:refDataTable"
 				    	disabled="#{empty referenceBean.selectedReference}" 	onclick="if (!confirm('Are you sure you want to delete the selected record?')) return false"/>			    	
 	  			</f:facet>  
+	  		
             </p:dataTable>				           		
      </h:form>
     <script type="text/javascript">  
@@ -180,7 +174,10 @@
 		            <p:column colspan="1"><h:outputText value="Public Comment:" /></p:column> 
 		            <p:column colspan="3"><p:inputText value="#{referenceBean.reference.publicComment}" style="width: 98%"/></p:column> 
 		        </p:row>
-		        
+		         <p:row>  
+		            <p:column colspan="1"><h:outputText value="Internal Comment:" /></p:column> 
+		            <p:column colspan="3"><p:inputText value="#{referenceBean.reference.internalComment}" style="width: 98%"/></p:column> 
+		        </p:row>
 		         </p:panelGrid>
          </p:panel>
          <f:facet name="footer">  
