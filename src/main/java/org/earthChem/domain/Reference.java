@@ -4,16 +4,11 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-
 /***
  * domain object
  * 
  *
  */
-@ManagedBean
-@SessionScoped
 public class Reference implements Serializable {
 	/**
 	 * 
