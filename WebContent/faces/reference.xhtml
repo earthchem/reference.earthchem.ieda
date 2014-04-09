@@ -36,10 +36,10 @@
                 rowsPerPageTemplate="5,10,15"
                 onRowSelectUpdate="display">
     
-                <p:ajax event="rowSelectCheckbox" update="editRef,deleteRef,citationRef" />
-  				<p:ajax event="rowUnselectCheckbox" update="editRef,deleteRef,citationRef" />
-				<p:ajax event="rowSelect" update="editRef,deleteRef,citationRef" />
-				<p:ajax event="rowUnselect" update="editRef,deleteRef,citationRef" />
+                <p:ajax event="rowSelectCheckbox" update="editRef,preDelete,citationRef" />
+  				<p:ajax event="rowUnselectCheckbox" update="editRef,preDelete,citationRef" />
+				<p:ajax event="rowSelect" update="editRef,preDelete,citationRef" />
+				<p:ajax event="rowUnselect" update="editRef,preDelete,citationRef" />
 				<p:column selectionMode="multiple"  style="width:2%" />  
 				<p:column sortBy="refNum" filterBy="refNum"
                    headerText="Ref Number">  
@@ -83,11 +83,10 @@
 				    	update=":detailForm:refData" 
 			    		oncomplete="referenceDialog.show()"/>
 			    		
-			    		<p:commandButton id="deleteRef" value="Delete"  
-				    	actionListener="#{referenceBean.doDelete}"
-				    	update=":editForm:refDataTable"
-				    	disabled="#{empty referenceBean.selectedReferences}"
-				    	onclick="return confirm('Are you sure you want to delete the selected record?');"/>		
+			    		<p:commandButton id="preDelete" value="Delete"  
+				    	 update=":editForm:displayDeletion" 
+				    	 disabled="#{empty referenceBean.selectedReferences}"
+				    	 oncomplete="PF('deleteDialog').show()"/>  		
 				    	
 				    	<p:commandButton id="citationRef" value="Citation"  
 				    	actionListener="#{referenceBean.doCitation}"
@@ -96,6 +95,21 @@
 	  			</f:facet>  
 	  		
             </p:dataTable>	
+            <p:dialog id="deleteDialog" header="Are you sure you want to delete the following records?" widgetVar="deleteDialog"  
+             width="500" height="250" showEffect="fade" hideEffect="explode">  
+  
+        <p:dataList id="displayDeletion" value="#{referenceBean.selectedReferences}" var="deletion" type="ordered">   
+        Ref_Num=#{deletion.refNum} (#{deletion.title}).
+        </p:dataList>  
+  		 <f:facet name="footer">  
+				   <p:commandButton id="deleteRef" value="Yes"  
+				    	actionListener="#{referenceBean.doDelete}"
+				    	update=":editForm:refDataTable"
+				    	oncomplete="PF('deleteDialog').hide()"/>  
+				   <p:commandButton id="notDeleteRef" value="No"  
+				    	oncomplete="PF('deleteDialog').hide()"/>  
+	  	 </f:facet>  
+   </p:dialog>  
              	           		
      </h:form>
     <script type="text/javascript">  

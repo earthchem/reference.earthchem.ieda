@@ -203,7 +203,7 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 	}
 	
 	@Override
-	public void deleteReference(Integer refNum) {
+	public void deleteReference(List<Integer> refNums) {
 		throw new UnsupportedOperationException ("Method not supported") ;
 	}
 	

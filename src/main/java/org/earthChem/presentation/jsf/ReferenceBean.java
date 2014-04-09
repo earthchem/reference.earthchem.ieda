@@ -28,7 +28,6 @@ public class ReferenceBean implements Serializable {
 	private static final long serialVersionUID = 8587883572157433057L;
 	private ReferenceManager referenceManager;
 	private Reference reference=new Reference();
-//	private Reference selectedReference;
 	private Reference[] selectedReferences;
 	private List<Reference> references;
 	private boolean isNew=false;
@@ -216,8 +215,7 @@ public class ReferenceBean implements Serializable {
 	
 	public void doDelete()
 	{	
-		if(!validateSelectedReferences()) return;
-		this.referenceManager.deleteReference(selectedReferences[0].getRefNum());		
+		this.referenceManager.deleteReference(getSelectedReferenceNumbers());		
 		selectedReferences = null;
 		this.references = this.referenceManager.getReferences();
 	}
@@ -227,7 +225,7 @@ public class ReferenceBean implements Serializable {
 		if(selectedReferences != null && selectedReferences.length != 1) {
 			FacesContext.getCurrentInstance().addMessage(null, 
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Validation Error:", "You can only select one row!"));		
+					"Error:", "You can only select one row for View/Edit!"));		
 			context.addCallbackParam("multiRow", true);		
 				return false;
 		} else {
@@ -236,22 +234,27 @@ public class ReferenceBean implements Serializable {
 		}
 	}
 	
+	private List<Integer> getSelectedReferenceNumbers()
+	{
+		List<Integer> list = new ArrayList<Integer>();
+		for (Reference ref: selectedReferences) {
+			list.add(ref.getRefNum());
+		}
+		return list;
+	}
+	
+	public void doCitation()
+	{
+		citationList = this.referenceManager.getCitations(getSelectedReferenceNumbers());
+	}
 	
 	public boolean getIsNew()
 	{
 		return this.isNew;
 	}
 	
-	public void doCitation()
-	{
-		List<Integer> list = new ArrayList<Integer>();
-		for (Reference ref: selectedReferences) {
-			list.add(ref.getRefNum());
-		}
-		citationList = this.referenceManager.getCitations(list);
-	}
-	
 	public List<String> getCitationList() {
 		return citationList;
 	}
+	
  }
