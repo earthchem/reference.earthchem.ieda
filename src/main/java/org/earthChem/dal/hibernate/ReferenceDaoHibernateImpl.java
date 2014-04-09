@@ -55,7 +55,7 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createSQLQuery(q);
 		@SuppressWarnings("unchecked")
-		List list = query.setParameterList("ids",selectedReferences).list();
+		List<Object[]> list = query.setParameterList("ids",selectedReferences).list();
 		@SuppressWarnings("rawtypes")
 		Iterator i = list.iterator();
 		BigDecimal previous=null;
@@ -192,14 +192,15 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 	 * 
 	 */
 	@Override
-	public void deleteReference(Integer refNum) {
+	public void deleteReference(List<Integer> refNums) {
 		Session session = sessionFactory.getCurrentSession();
-
-		Query query = session.createSQLQuery(
+		for(Integer refNum:refNums){				
+			Query query = session.createSQLQuery(
 				"CALL PRC_DEL_REF_CASCADE(:refNum)")
 				.addEntity(Reference.class)
 				.setParameter("refNum", refNum);
 				query.executeUpdate();
+		}
 	}
 
 	/********

@@ -20,7 +20,7 @@ public interface ReferenceManager {
 
 	public void addOrUpdateReference(Reference reference);
 	
-	public void deleteReference(Integer refNum);
+	public void deleteReference(List<Integer> refNums);
 	
 	public List<String> getCitations(List<Integer> selectedReferences);
 	
