@@ -22,4 +22,6 @@ public interface ReferenceManager {
 	
 	public void deleteReference(Integer refNum);
 	
+	public List<String> getCitations(List<Integer> selectedReferences);
+	
 }

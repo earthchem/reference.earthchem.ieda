@@ -24,17 +24,23 @@
        		draggable="false" closable="false">  
     		<p:graphicImage value="/images/loading.gif" />  
 		</p:dialog>
-    	<p:dataTable id="refDataTable" var="reference"
+    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+               <p:dataTable id="refDataTable" var="reference"
                 value="#{referenceBean.references}" paginator="true" filteredValue="#{referenceBean.filteredReference}" 
                 rows="10" 
                 style="width: 90%;"
                 rowKey="#{reference.refNum}"
+                selection="#{referenceBean.selectedReferences}"
+              
                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                 rowsPerPageTemplate="5,10,15"
-                selection="#{referenceBean.selectedReference}"
-                selectionMode="single" onRowSelectUpdate="display">
-				<p:ajax event="rowSelect" update="editRef,deleteRef" />
-				<p:ajax event="rowUnselect" update="editRef,deleteRef" />
+                onRowSelectUpdate="display">
+    
+                <p:ajax event="rowSelectCheckbox" update="editRef,deleteRef,citationRef" />
+  				<p:ajax event="rowUnselectCheckbox" update="editRef,deleteRef,citationRef" />
+				<p:ajax event="rowSelect" update="editRef,deleteRef,citationRef" />
+				<p:ajax event="rowUnselect" update="editRef,deleteRef,citationRef" />
+				<p:column selectionMode="multiple"  style="width:2%" />  
 				<p:column sortBy="refNum" filterBy="refNum"
                    headerText="Ref Number">  
                     <h:outputText value="#{reference.refNum}" />
@@ -64,12 +70,13 @@
                 	filterMatchMode="exact" filterStyle="width:200px;">
                     <h:outputText value="#{reference.status}" />
                 </p:column>
+           	
                 <f:facet name="footer">  
 				    <p:commandButton id="editRef" value="View/Edit"  
 				    	actionListener="#{referenceBean.doEdit}"
 				    	update=":detailForm:refData" 
-				    	disabled="#{empty referenceBean.selectedReference}"
-			    		oncomplete="referenceDialog.show()"/>						
+				    	disabled="#{empty referenceBean.selectedReferences}"
+			    		oncomplete="handleEditRequest(xhr, status, args)"/>     					
 			    		
 			    		<p:commandButton id="addRef" value="Add"  
 				    	actionListener="#{referenceBean.doAdd}"
@@ -79,14 +86,28 @@
 			    		<p:commandButton id="deleteRef" value="Delete"  
 				    	actionListener="#{referenceBean.doDelete}"
 				    	update=":editForm:refDataTable"
-				    	disabled="#{empty referenceBean.selectedReference}" 	onclick="if (!confirm('Are you sure you want to delete the selected record?')) return false"/>			    	
+				    	disabled="#{empty referenceBean.selectedReferences}"
+				    	onclick="return confirm('Are you sure you want to delete the selected record?');"/>		
+				    	
+				    	<p:commandButton id="citationRef" value="Citation"  
+				    	actionListener="#{referenceBean.doCitation}"
+				    	disabled="#{empty referenceBean.selectedReferences}"
+				    	update=":detailForm:displayCitation" oncomplete="PF('citationDialog').show()"/>  
 	  			</f:facet>  
 	  		
-            </p:dataTable>				           		
+            </p:dataTable>	
+             	           		
      </h:form>
     <script type="text/javascript">  
     function handleSaveRequest(xhr, status, args) {  
         if(args.validRefNum) {  
+            referenceDialog.hide(); 
+        } else {
+        	referenceDialog.show(); 
+        }
+    }  
+    function handleEditRequest(xhr, status, args) {  
+        if(args.multiRow) {  
             referenceDialog.hide(); 
         } else {
         	referenceDialog.show(); 
@@ -183,10 +204,20 @@
          <f:facet name="footer">  
 				    <p:commandButton id="save" value="Save"  
 				    	actionListener="#{referenceBean.doSave}"
-				    	update="refData,:editForm:refDataTable"
+				    	update=":detailForm:refData,:editForm:refDataTable"
 			    		oncomplete="handleSaveRequest(xhr, status, args)"/>      
 	  	 </f:facet>  
     </p:dialog>  
+    
+    <p:dialog id="citationListDialog" header="PetDB Citations" widgetVar="citationDialog"  
+             width="1000" height="500" showEffect="fade" hideEffect="explode">  
+  
+        <p:dataList id="displayCitation" value="#{referenceBean.citationList}" var="citation" type="ordered">   
+           #{citation} 
+        </p:dataList>  
+  
+   </p:dialog>  
+    
       </h:form>
    </h:body>
 	

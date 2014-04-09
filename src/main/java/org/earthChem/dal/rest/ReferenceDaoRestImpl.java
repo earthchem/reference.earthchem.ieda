@@ -204,6 +204,11 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 	
 	@Override
 	public void deleteReference(Integer refNum) {
+		throw new UnsupportedOperationException ("Method not supported") ;
+	}
+	
+	@Override
+	public List<String> getCitations(List<Integer> selectedReferences) {
 		throw new UnsupportedOperationException ("Method not supported");
 	}
 	
