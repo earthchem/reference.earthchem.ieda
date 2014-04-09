@@ -1,6 +1,7 @@
 package org.earthChem.presentation.jsf;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -16,8 +17,8 @@ import org.primefaces.context.RequestContext;
 /*********
  * JSF Backing Bean for Reference Page
  *
- *
  */
+ 
 @ManagedBean
 @SessionScoped
 public class ReferenceBean implements Serializable {
@@ -27,12 +28,21 @@ public class ReferenceBean implements Serializable {
 	private static final long serialVersionUID = 8587883572157433057L;
 	private ReferenceManager referenceManager;
 	private Reference reference=new Reference();
-	private Reference selectedReference;
+//	private Reference selectedReference;
+	private Reference[] selectedReferences;
 	private List<Reference> references;
 	private boolean isNew=false;
 	private SelectItem[] statusOptions=null;
 	private List<Reference> filteredReference;
-	
+	private List<String> citationList; 
+
+	public Reference[] getSelectedReferences() {
+		return selectedReferences;
+	}
+	public void setSelectedReferences(Reference[] selectedReferences) {
+		this.selectedReferences = selectedReferences;
+	}
+
 	
 	public List<Reference> getFilteredReference() {
 		return filteredReference;
@@ -72,15 +82,7 @@ public class ReferenceBean implements Serializable {
   
         return statusOptions;  
     }  
-	
 
-	public Reference getSelectedReference() {
-		return selectedReference;
-	}
-	public void setSelectedReference(Reference selectedReference) {
-		this.selectedReference = selectedReference;
-	}
-	
 	public List<Reference> getReferences() {
 		if (this.references == null)
 			this.references =  this.referenceManager.getReferences();
@@ -197,7 +199,8 @@ public class ReferenceBean implements Serializable {
 	 */
 	public void doEdit()
 	{
-		this.reference=this.selectedReference;
+		if(!validateSelectedReferences()) return;
+		this.reference=this.selectedReferences[0];
 		this.isNew = false;
 	}
 	
@@ -212,17 +215,43 @@ public class ReferenceBean implements Serializable {
 	}
 	
 	public void doDelete()
-	{		
-		this.referenceManager.deleteReference(selectedReference.getRefNum());		
-		selectedReference = null;
+	{	
+		if(!validateSelectedReferences()) return;
+		this.referenceManager.deleteReference(selectedReferences[0].getRefNum());		
+		selectedReferences = null;
 		this.references = this.referenceManager.getReferences();
 	}
+	
+	private boolean validateSelectedReferences() {
+		RequestContext context = RequestContext.getCurrentInstance(); 
+		if(selectedReferences != null && selectedReferences.length != 1) {
+			FacesContext.getCurrentInstance().addMessage(null, 
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Validation Error:", "You can only select one row!"));		
+			context.addCallbackParam("multiRow", true);		
+				return false;
+		} else {
+			context.addCallbackParam("multiRow", false);		
+			return true;
+		}
+	}
+	
 	
 	public boolean getIsNew()
 	{
 		return this.isNew;
 	}
 	
+	public void doCitation()
+	{
+		List<Integer> list = new ArrayList<Integer>();
+		for (Reference ref: selectedReferences) {
+			list.add(ref.getRefNum());
+		}
+		citationList = this.referenceManager.getCitations(list);
+	}
 	
-	
-}
+	public List<String> getCitationList() {
+		return citationList;
+	}
+ }

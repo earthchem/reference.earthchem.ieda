@@ -46,6 +46,44 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 		
 	}
 	
+	@Override
+	public List<String> getCitations(List<Integer> selectedReferences)
+	{
+		String q = "select r.REF_NUM, p.LAST_NAME||' '||p.first_name, r.TITLE||'. '||r.JOURNAL||', '||r.pub_year||'; p. '||r.first_page||'-'||r.last_page||'.' "+
+				" from reference r, AUTHOR_LIST a, person p where p.PERSON_NUM = a.PERSON_NUM and a.ref_num = r.REF_NUM and r.ref_num in (:ids) order by r.ref_num, a.AUTHOR_ORDER "; 	
+		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createSQLQuery(q);
+		@SuppressWarnings("unchecked")
+		List list = query.setParameterList("ids",selectedReferences).list();
+		@SuppressWarnings("rawtypes")
+		Iterator i = list.iterator();
+		BigDecimal previous=null;
+		List<String> citationList = new ArrayList<String>();
+		Object [] arr = null;
+		StringBuilder sb = null;
+		String desc = null;
+		while(i.hasNext()) {
+			arr = (Object[])i.next();
+			BigDecimal current = (BigDecimal) arr[0];
+			if(current.equals(previous)) {
+				sb.append(", "+arr[1]);
+			} else {
+				if(previous != null) {
+					sb.append(". "+desc);
+					citationList.add(sb.toString());
+				} 
+				sb = new StringBuilder();
+				sb.append(arr[1]);	
+				desc = (String)arr[2];
+				previous = current;
+			}
+		}
+		sb.append(". "+desc);
+		citationList.add(sb.toString());
+		return citationList;
+	}
+	
 	/**
 	 * convert hibernate bean to domain object
 	 * 
@@ -110,7 +148,7 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 	 */
 	@Override
 	public List<Reference> getReferences() {
-		
+
 		Session session = sessionFactory.getCurrentSession();
 
 		@SuppressWarnings("unchecked")
@@ -150,6 +188,10 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 	        
 	}
 	
+	/* To delete the reference data to database
+	 * 
+	 */
+	@Override
 	public void deleteReference(Integer refNum) {
 		Session session = sessionFactory.getCurrentSession();
 
