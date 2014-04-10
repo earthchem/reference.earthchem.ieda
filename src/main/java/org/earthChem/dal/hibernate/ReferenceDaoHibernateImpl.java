@@ -49,7 +49,8 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 	@Override
 	public List<String> getCitations(List<Integer> selectedReferences)
 	{
-		String q = "select r.REF_NUM, p.LAST_NAME||' '||p.first_name, r.TITLE||'. '||r.JOURNAL||', '||r.pub_year||'; p. '||r.first_page||'-'||r.last_page||'.' "+
+		String q = "select r.REF_NUM, p.LAST_NAME||' '||p.first_name, r.pub_year||', '||r.TITLE||', '||decode(r.JOURNAL,null,r.PUBLISHER, r.journal)||"+
+				" decode(r.volume, null,'', ', '||r.volume)||decode(r.publication_doi, null, '',', '||r.publication_doi)||'.' "+
 				" from reference r, AUTHOR_LIST a, person p where p.PERSON_NUM = a.PERSON_NUM and a.ref_num = r.REF_NUM and r.ref_num in (:ids) order by r.ref_num, a.AUTHOR_ORDER "; 	
 		
 		Session session = sessionFactory.getCurrentSession();
