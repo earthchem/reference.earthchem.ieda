@@ -34,6 +34,11 @@ public class ReferenceBean implements Serializable {
 	private SelectItem[] statusOptions=null;
 	private List<Reference> filteredReference;
 	private List<String> citationList; 
+	
+	public int getTotalRecords()
+	{
+		return references.size(); 
+	}
 
 	public Reference[] getSelectedReferences() {
 		return selectedReferences;
