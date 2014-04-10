@@ -30,10 +30,9 @@
                 rows="10" 
                 style="width: 90%;"
                 rowKey="#{reference.refNum}"
-                selection="#{referenceBean.selectedReferences}"
-              
+                selection="#{referenceBean.selectedReferences}"           
                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                rowsPerPageTemplate="5,10,15"
+                rowsPerPageTemplate="5,10,50,100,#{referenceBean.totalRecords}"
                 onRowSelectUpdate="display">
     
                 <p:ajax event="rowSelectCheckbox" update="editRef,preDelete,citationRef" />
@@ -86,19 +85,18 @@
 			    		<p:commandButton id="preDelete" value="Delete"  
 				    	 update=":editForm:displayDeletion" 
 				    	 disabled="#{empty referenceBean.selectedReferences}"
-				    	 oncomplete="PF('deleteDialog').show()"/>  		
-				    	
+				    	 oncomplete="PF('deleteDialog').show()"/>  			  		
+		  				    	
 				    	<p:commandButton id="citationRef" value="Citation"  
 				    	actionListener="#{referenceBean.doCitation}"
 				    	disabled="#{empty referenceBean.selectedReferences}"
 				    	update=":detailForm:displayCitation" oncomplete="PF('citationDialog').show()"/>  
 	  			</f:facet>  
-	  		
             </p:dataTable>	
+         
             <p:dialog id="deleteDialog" header="Are you sure you want to delete the following records?" widgetVar="deleteDialog"  
-             width="500" height="250" showEffect="fade" hideEffect="explode">  
-  
-        <p:dataList id="displayDeletion" value="#{referenceBean.selectedReferences}" var="deletion" type="ordered">   
+             width="500" height="250" showEffect="fade" hideEffect="explode"  modal="true">  
+  			   <p:dataList id="displayDeletion" value="#{referenceBean.selectedReferences}" var="deletion" type="ordered">   
         Ref_Num=#{deletion.refNum} (#{deletion.title}).
         </p:dataList>  
   		 <f:facet name="footer">  
@@ -109,9 +107,13 @@
 				   <p:commandButton id="notDeleteRef" value="No"  
 				    	oncomplete="PF('deleteDialog').hide()"/>  
 	  	 </f:facet>  
-   </p:dialog>  
-             	           		
+   </p:dialog>
+  	      		
+            		
      </h:form>
+    
+    
+     
     <script type="text/javascript">  
     function handleSaveRequest(xhr, status, args) {  
         if(args.validRefNum) {  
