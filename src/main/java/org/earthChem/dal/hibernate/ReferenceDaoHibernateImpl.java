@@ -3,6 +3,7 @@ package org.earthChem.dal.hibernate;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -82,6 +83,7 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 		}
 		sb.append(". "+desc);
 		citationList.add(sb.toString());
+		Collections.sort(citationList);
 		return citationList;
 	}
 	
