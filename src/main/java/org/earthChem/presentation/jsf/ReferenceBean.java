@@ -3,8 +3,11 @@ package org.earthChem.presentation.jsf;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -36,6 +39,7 @@ public class ReferenceBean implements Serializable {
 	private List<Reference> filteredReference;
 	private List<String> citationList; 
 	private List<Integer> selectedRefNums;
+	private Set<Integer> citationSet = new HashSet<Integer>();
  	
 	public int getTotalRecords()
 	{
@@ -209,6 +213,7 @@ public class ReferenceBean implements Serializable {
 	
 	public void doDelete()
 	{	
+		citationSet.clear();
 		setSelectedReferenceNumbers();
 		this.referenceManager.deleteReference(selectedRefNums);		
 		selectedReferences = null;
@@ -232,11 +237,11 @@ public class ReferenceBean implements Serializable {
 	public void doResetSelection()
 	{
 		selectedReferences = null;
+		citationSet.clear();
 	}
 	
 	public void doCitation()
 	{
-		
 		setSelectedReferenceNumbers();
 		citationList = this.referenceManager.getCitations(selectedRefNums);
 	}
@@ -260,12 +265,13 @@ public class ReferenceBean implements Serializable {
 	}
 	
 	private void setSelectedReferenceNumbers()
-	{
+	{	
 		selectedRefNums = new ArrayList<Integer>();
 		if(selectedReferences != null)
 		for (Reference ref: selectedReferences) {
-			selectedRefNums.add(ref.getRefNum());
+			citationSet.add(ref.getRefNum());
 		}
+		selectedRefNums.addAll(citationSet);
 	}
 	
 	private boolean hasDoiBeUsed(String doi)
