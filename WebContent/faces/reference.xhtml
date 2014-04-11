@@ -30,15 +30,16 @@
                 rows="10" 
                 style="width: 90%;"
                 rowKey="#{reference.refNum}"
-                selection="#{referenceBean.selectedReferences}"           
+                selection="#{referenceBean.selectedReferences}"    
+                rowSelectMode="true"       
                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                 rowsPerPageTemplate="5,10,50,100,#{referenceBean.totalRecords}"
                 onRowSelectUpdate="display">
     
-                <p:ajax event="rowSelectCheckbox" update="editRef,preDelete,citationRef" />
-  				<p:ajax event="rowUnselectCheckbox" update="editRef,preDelete,citationRef" />
-				<p:ajax event="rowSelect" update="editRef,preDelete,citationRef" />
-				<p:ajax event="rowUnselect" update="editRef,preDelete,citationRef" />
+                <p:ajax event="rowSelectCheckbox" update="editRef,preDelete,citationRef,resetSelection" />
+  				<p:ajax event="rowUnselectCheckbox" update="editRef,preDelete,citationRef,resetSelection" />
+				<p:ajax event="rowSelect" update="editRef,preDelete,citationRef,resetSelection" />
+				<p:ajax event="rowUnselect" update="editRef,preDelete,citationRef,resetSelection" />
 				<p:column selectionMode="multiple"  style="width:2%" />  
 				<p:column sortBy="refNum" filterBy="refNum"
                    headerText="Ref Number">  
@@ -90,7 +91,12 @@
 				    	<p:commandButton id="citationRef" value="Citation"  
 				    	actionListener="#{referenceBean.doCitation}"
 				    	disabled="#{empty referenceBean.selectedReferences}"
-				    	update=":detailForm:displayCitation" oncomplete="PF('citationDialog').show()"/>  
+				    	update=":detailForm:citationListDialog" oncomplete="PF('citationDialog').show()"/>  
+				    	
+				    	<p:commandButton id="resetSelection" value="Reset"  
+				    	actionListener="#{referenceBean.doResetSelection}"
+				    	disabled="#{empty referenceBean.selectedReferences}"
+				    	update=":editForm:refDataTable"/>  
 	  			</f:facet>  
             </p:dataTable>	
          
@@ -231,7 +237,7 @@
         <p:dataList id="displayCitation" value="#{referenceBean.citationList}" var="citation" type="ordered">   
            #{citation} 
         </p:dataList>  
-  
+  		 Reference Numbers: #{referenceBean.selectedRefArray}
    </p:dialog>  
     
       </h:form>

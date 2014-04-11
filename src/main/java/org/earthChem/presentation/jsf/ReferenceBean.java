@@ -2,6 +2,7 @@ package org.earthChem.presentation.jsf;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -34,7 +35,8 @@ public class ReferenceBean implements Serializable {
 	private SelectItem[] statusOptions=null;
 	private List<Reference> filteredReference;
 	private List<String> citationList; 
-	
+	private List<Integer> selectedRefNums;
+ 	
 	public int getTotalRecords()
 	{
 		return references.size(); 
@@ -97,20 +99,7 @@ public class ReferenceBean implements Serializable {
 		this.references = references;
 	} 
 	
-	private boolean hasDoiBeUsed(String doi)
-	{
-		Iterator<Reference> it=this.references.iterator();
-		while (it.hasNext())
-		{
-			Reference ref=it.next();
-			if (ref.getDoi() == null || ref.getDoi().isEmpty())
-				continue;
-			if (ref.getDoi().equalsIgnoreCase(doi))
-				return true;
-		}
-		return false;
-	}
-	/******
+		/******
 	 * to get the reference data for input doi
 	 */
 	public void doSubmit() {  
@@ -220,7 +209,8 @@ public class ReferenceBean implements Serializable {
 	
 	public void doDelete()
 	{	
-		this.referenceManager.deleteReference(getSelectedReferenceNumbers());		
+		setSelectedReferenceNumbers();
+		this.referenceManager.deleteReference(selectedRefNums);		
 		selectedReferences = null;
 		this.references = this.referenceManager.getReferences();
 	}
@@ -239,19 +229,18 @@ public class ReferenceBean implements Serializable {
 		}
 	}
 	
-	private List<Integer> getSelectedReferenceNumbers()
+	public void doResetSelection()
 	{
-		List<Integer> list = new ArrayList<Integer>();
-		for (Reference ref: selectedReferences) {
-			list.add(ref.getRefNum());
-		}
-		return list;
+		selectedReferences = null;
 	}
 	
 	public void doCitation()
 	{
-		citationList = this.referenceManager.getCitations(getSelectedReferenceNumbers());
+		
+		setSelectedReferenceNumbers();
+		citationList = this.referenceManager.getCitations(selectedRefNums);
 	}
+	
 	
 	public boolean getIsNew()
 	{
@@ -262,4 +251,35 @@ public class ReferenceBean implements Serializable {
 		return citationList;
 	}
 	
+	
+	public String getSelectedRefArray()
+	{
+		if(selectedRefNums==null) selectedRefNums = new ArrayList<Integer>();
+		Collections.sort(selectedRefNums);
+		return selectedRefNums.toString();
+	}
+	
+	private void setSelectedReferenceNumbers()
+	{
+		selectedRefNums = new ArrayList<Integer>();
+		if(selectedReferences != null)
+		for (Reference ref: selectedReferences) {
+			selectedRefNums.add(ref.getRefNum());
+		}
+	}
+	
+	private boolean hasDoiBeUsed(String doi)
+	{
+		Iterator<Reference> it=this.references.iterator();
+		while (it.hasNext())
+		{
+			Reference ref=it.next();
+			if (ref.getDoi() == null || ref.getDoi().isEmpty())
+				continue;
+			if (ref.getDoi().equalsIgnoreCase(doi))
+				return true;
+		}
+		return false;
+	}
+
  }
