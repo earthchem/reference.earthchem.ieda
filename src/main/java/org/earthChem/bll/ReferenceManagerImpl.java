@@ -46,7 +46,7 @@ public class ReferenceManagerImpl implements ReferenceManager, Serializable {
 		statuses.add("IN_QUEUE");
 		statuses.add("IN_PROGRESS");
 		statuses.add("COMPLETED");
-		statuses.add("ALERT!");
+		statuses.add("ALERT");
 		return statuses;
 	}
 
