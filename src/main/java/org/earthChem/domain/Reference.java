@@ -28,7 +28,7 @@ public class Reference implements Serializable {
 	private String bookTitle;
 	private String bookEditor;
 	private String publisher;
-	private String dataEntered;
+	private String dataEntered="N";//Default to N
 	private Date dataEnteredDate;
 	private String status;
 	private String publicComment;
