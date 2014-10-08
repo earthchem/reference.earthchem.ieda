@@ -52,7 +52,6 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 	@Override
 	public Reference getReferenceByDoi(String doi) throws InvalidDoiException {
 		Reference result=new Reference();
-		
 		String json=this.getDataFromDoiServer(doi);
 		if (json == null)
 			return null;
@@ -74,12 +73,13 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 				result.setPublisher(jo.getString(PUBLISHER));
 			if (jo.has(PAGE))
 			{
-				String page=jo.getString(PAGE);
+				String page=jo.getString(PAGE);				
 				String startPage=page.substring(0, page.indexOf('-'));
-				result.setFirstPage(new BigDecimal(startPage));
+				if(isNumeric(startPage)) result.setFirstPage(new BigDecimal(startPage));			
 				String endPage=page.substring(page.indexOf('-') + 1);
-				result.setLastPage(new BigDecimal(endPage));
+				if(isNumeric(endPage)) result.setLastPage(new BigDecimal(endPage));
 			}
+			
 			if (jo.has(ISSUED))
 			{
 				JSONObject issuedJo=jo.getJSONObject(ISSUED);
@@ -95,7 +95,7 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 							{
 								String year=yearArray.getString(0);
 								if (year != null && year.isEmpty() == false)	
-									result.setPubYear(new BigDecimal(year));
+									{ if(isNumeric(year)) result.setPubYear(new BigDecimal(year));}
 							}
 						}
 					}
@@ -103,7 +103,7 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 					{
 						String year=issuedJo.getString(RAW);
 						if (year != null && year.isEmpty() == false)
-							result.setPubYear(new BigDecimal(year));
+							{ if(isNumeric(year)) result.setPubYear(new BigDecimal(year)); }
 						
 					}
 				}
@@ -228,4 +228,8 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 		} 
 		
 	}
+	
+	public boolean isNumeric(String s) {  
+	    return s.matches("[-+]?\\d*\\.?\\d+");  
+	}  
 }
