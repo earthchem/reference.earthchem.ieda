@@ -10,6 +10,7 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.protocol.HttpContext;
@@ -25,6 +26,7 @@ import org.earthChem.exception.InvalidDoiException;
  * @author 
  *
  */
+@SuppressWarnings("deprecation")
 public class ReferenceDaoRestImpl implements ReferenceDao {
 	public static final String DOI_SERVER="http://dx.doi.org/";
 	public static final String VOLUME="volume";
@@ -73,11 +75,13 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 				result.setPublisher(jo.getString(PUBLISHER));
 			if (jo.has(PAGE))
 			{
-				String page=jo.getString(PAGE);				
+				String page=jo.getString(PAGE);		
+				if(page.indexOf('-') != -1) {
 				String startPage=page.substring(0, page.indexOf('-'));
-				if(isNumeric(startPage)) result.setFirstPage(new BigDecimal(startPage));			
+				if(isNumeric(startPage)) result.setFirstPage(new BigDecimal(startPage));	
 				String endPage=page.substring(page.indexOf('-') + 1);
 				if(isNumeric(endPage)) result.setLastPage(new BigDecimal(endPage));
+				} else result.setFirstPage(new BigDecimal(page));
 			}
 			
 			if (jo.has(ISSUED))
@@ -128,8 +132,7 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 		try {
 			 
 			  @SuppressWarnings("deprecation")
-			DefaultHttpClient  httpClient = new DefaultHttpClient();
-
+			  DefaultHttpClient  httpClient = new DefaultHttpClient();
 			  httpClient.setRedirectStrategy(new DefaultRedirectStrategy(){
 			        public boolean isRedirected(HttpRequest request, HttpResponse response, HttpContext context)  {
 			            boolean isRedirect=false;
@@ -147,16 +150,17 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 			            return isRedirect;
 			        }
 			    });
+			
 			HttpGet getRequest = new HttpGet(DOI_SERVER + doi);
-			getRequest.addHeader("accept", "application/rdf_xml;q=0.5,application/vnd.citationstyles.csl+json;q=1.0");
-	 
-			HttpResponse response = httpClient.execute(getRequest);
-	 
-
+		//	getRequest.addHeader("accept", "application/rdf_xml;q=0.5,application/vnd.citationstyles.csl+json;q=1.0");
+			getRequest.addHeader("accept","application/vnd.citationstyles.csl+json;q=1.0");
+			
+			HttpResponse response = httpClient.execute(getRequest);			
+			
 			if (response.getStatusLine().getStatusCode() == 404) {
 				throw new InvalidDoiException("Invalid DOI");
 			}
-			
+
 			if (response.getStatusLine().getStatusCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "
 				   + response.getStatusLine().getStatusCode());
