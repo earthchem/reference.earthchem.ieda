@@ -122,7 +122,7 @@ public class ReferenceBean implements Serializable {
         {
         	FacesContext.getCurrentInstance().addMessage(null, 
 								new FacesMessage(FacesMessage.SEVERITY_ERROR,
-								"Validation Error:", "A reference with input doi has been in the database."));
+								"Validation Error:", "This DOI already exists in the database."));
         }
         else
         {
