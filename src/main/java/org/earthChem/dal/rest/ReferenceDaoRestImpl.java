@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.apache.http.HttpRequest;
@@ -151,7 +152,8 @@ public class ReferenceDaoRestImpl implements ReferenceDao {
 			        }
 			    });
 			
-			HttpGet getRequest = new HttpGet(DOI_SERVER + doi);
+		//	HttpGet getRequest = new HttpGet(DOI_SERVER + doi);			  
+			  HttpGet getRequest = new HttpGet(DOI_SERVER +URLEncoder.encode(doi, "UTF-8")); 
 		//	getRequest.addHeader("accept", "application/rdf_xml;q=0.5,application/vnd.citationstyles.csl+json;q=1.0");
 			getRequest.addHeader("accept","application/vnd.citationstyles.csl+json;q=1.0");
 			
