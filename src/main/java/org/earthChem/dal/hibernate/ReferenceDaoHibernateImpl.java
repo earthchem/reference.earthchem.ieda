@@ -107,7 +107,6 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 		reference.setBookTitle(referenceHbm.getBookTitle());
 		reference.setBookEditor(referenceHbm.getBookEditor());
 		reference.setPublisher(referenceHbm.getPublisher());
-		reference.setDataEntered(referenceHbm.getDataEntered());
 		reference.setDataEnteredDate(referenceHbm.getDataEnteredDate());
 		reference.setStatus(referenceHbm.getStatus());
 		reference.setPublicComment(referenceHbm.getPublicComment());
@@ -226,7 +225,6 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 		referenceHbm.setBookTitle(reference.getBookTitle());
 		referenceHbm.setBookEditor(reference.getBookEditor());
 		referenceHbm.setPublisher(reference.getPublisher());
-		referenceHbm.setDataEntered(reference.getDataEntered());
 		referenceHbm.setDataEnteredDate(reference.getDataEnteredDate());
 		referenceHbm.setStatus(reference.getStatus());
 		referenceHbm.setPublicComment(reference.getPublicComment());

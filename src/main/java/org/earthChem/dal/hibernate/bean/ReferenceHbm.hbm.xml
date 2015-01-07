@@ -38,12 +38,6 @@
         <property name="publisher" type="string">
             <column name="PUBLISHER" />
         </property>
-        <property name="dataEntered" type="string">
-            <column name="DATA_ENTERED" />
-        </property>
-        <property name="dataEnteredDate" type="timestamp">
-            <column name="DATA_ENTERED_DATE" length="7" />
-        </property>
         <property name="publicationDoi" type="string">
             <column name="PUBLICATION_DOI" length="128" />
         </property>

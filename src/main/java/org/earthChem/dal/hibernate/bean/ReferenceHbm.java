@@ -23,7 +23,6 @@ public class ReferenceHbm  implements java.io.Serializable {
      private String bookTitle;
      private String bookEditor;
      private String publisher;
-     private String dataEntered;
      private Date dataEnteredDate;
      private String publicationDoi;
      private String status;
@@ -55,7 +54,6 @@ public class ReferenceHbm  implements java.io.Serializable {
         this.bookTitle = bookTitle;
         this.bookEditor = bookEditor;
         this.publisher = publisher;
-        this.dataEntered = dataEntered;
         this.dataEnteredDate = dataEnteredDate;
         this.publicationDoi = publicationDoi;
         this.status = status;
@@ -153,14 +151,6 @@ public class ReferenceHbm  implements java.io.Serializable {
     
     public void setPublisher(String publisher) {
         this.publisher = publisher;
-    }
-
-    public String getDataEntered() {
-        return this.dataEntered;
-    }
-    
-    public void setDataEntered(String dataEntered) {
-        this.dataEntered = dataEntered;
     }
 
     public Date getDataEnteredDate() {
