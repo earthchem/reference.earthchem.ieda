@@ -183,6 +183,7 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 		ReferenceHbm referenceHbm=this.getReferenceHbm(new BigDecimal(reference.getRefNum()));
 		if (referenceHbm == null)
 			referenceHbm=new ReferenceHbm();
+		System.out.println("bc-addOrUpdateReference(Reference)");
 		this.convertReference2ReferenceHbm(reference, referenceHbm);
 		
 		Session session = sessionFactory.getCurrentSession();			
@@ -219,7 +220,7 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 		referenceHbm.setJournal(reference.getJournal());
 		referenceHbm.setVolume(reference.getVolume());
 		referenceHbm.setIssue(reference.getIssue());
-		referenceHbm.setFirstPage(referenceHbm.getFirstPage());
+		referenceHbm.setFirstPage(reference.getFirstPage());
 		referenceHbm.setLastPage(reference.getLastPage());
 		referenceHbm.setPubYear(reference.getPubYear());
 		referenceHbm.setBookTitle(reference.getBookTitle());
@@ -229,6 +230,9 @@ public class ReferenceDaoHibernateImpl implements ReferenceDao, Serializable {
 		referenceHbm.setStatus(reference.getStatus());
 		referenceHbm.setPublicComment(reference.getPublicComment());
 		referenceHbm.setInternalComment(reference.getInternalComment());
+		if("0".equals(referenceHbm.getFirstPage().toString())) referenceHbm.setFirstPage(null);
+		if("0".equals(referenceHbm.getLastPage().toString())) referenceHbm.setLastPage(null);
+		
 		
 	}
 
